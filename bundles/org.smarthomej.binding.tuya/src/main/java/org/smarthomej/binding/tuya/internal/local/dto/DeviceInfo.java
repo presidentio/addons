@@ -24,11 +24,18 @@ import org.eclipse.jdt.annotation.Nullable;
  */
 @NonNullByDefault
 public class DeviceInfo {
+    public final static int DEFAULT_PORT = 6668;
     public final String ip;
+    public final int port;
     public final String protocolVersion;
 
     public DeviceInfo(String ip, String protocolVersion) {
+        this(ip, DeviceInfo.DEFAULT_PORT, protocolVersion);
+    }
+
+    public DeviceInfo(String ip, int port, String protocolVersion) {
         this.ip = ip;
+        this.port = port;
         this.protocolVersion = protocolVersion;
     }
 

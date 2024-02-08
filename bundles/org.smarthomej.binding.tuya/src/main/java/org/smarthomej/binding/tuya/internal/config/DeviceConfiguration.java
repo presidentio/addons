@@ -26,6 +26,8 @@ public class DeviceConfiguration {
     public String localKey = "";
 
     public String ip = "";
+
+    public int port = 0;
     public String protocol = "";
 
     public int pollingInterval = 0;

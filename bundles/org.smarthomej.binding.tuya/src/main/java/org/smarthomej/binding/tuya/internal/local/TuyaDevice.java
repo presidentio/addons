@@ -65,13 +65,15 @@ public class TuyaDevice implements ChannelFutureListener {
     private final String deviceId;
 
     private final String address;
+    private final int port;
     private final ProtocolVersion protocolVersion;
     private final KeyStore keyStore;
     private @Nullable Channel channel;
 
     public TuyaDevice(Gson gson, DeviceStatusListener deviceStatusListener, EventLoopGroup eventLoopGroup,
-            String deviceId, byte[] deviceKey, String address, String protocolVersion) {
+            String deviceId, byte[] deviceKey, String address, int port, String protocolVersion) {
         this.address = address;
+        this.port = port;
         this.deviceId = deviceId;
         this.keyStore = new KeyStore(deviceKey);
         this.deviceStatusListener = deviceStatusListener;
@@ -98,7 +100,7 @@ public class TuyaDevice implements ChannelFutureListener {
 
     public void connect() {
         keyStore.reset(); // reset session key
-        bootstrap.connect(address, 6668).addListener(this);
+        bootstrap.connect(address, port).addListener(this);
     }
 
     private void disconnect() {
