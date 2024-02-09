@@ -65,7 +65,8 @@ public class TuyaDeviceManager implements DeviceInfoSubscriber, DeviceStatusList
 
     private void init() {
         if (!configuration.ip.isBlank()) {
-            deviceInfoChanged(new DeviceInfo(configuration.ip, configuration.protocol));
+            deviceInfoChanged(new DeviceInfo(configuration.ip, configuration.port, configuration.protocol));
+
         } else {
             deviceStatusListener.onDisconnected(ThingStatusDetail.CONFIGURATION_PENDING, "Waiting for IP address");
             udpDiscoveryListener.registerListener(configuration.deviceId, this);
@@ -83,7 +84,8 @@ public class TuyaDeviceManager implements DeviceInfoSubscriber, DeviceStatusList
         deviceStatusListener.onDisconnected(ThingStatusDetail.NONE, "");
 
         this.tuyaDevice = new TuyaDevice(gson, this, eventLoopGroup, configuration.deviceId,
-                configuration.localKey.getBytes(StandardCharsets.UTF_8), deviceInfo.ip, deviceInfo.protocolVersion);
+                configuration.localKey.getBytes(StandardCharsets.UTF_8), deviceInfo.ip, deviceInfo.port,
+                deviceInfo.protocolVersion);
     }
 
     public TuyaDevice getTuyaDevice() {

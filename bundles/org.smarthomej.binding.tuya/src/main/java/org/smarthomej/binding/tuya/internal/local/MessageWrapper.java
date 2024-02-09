@@ -23,6 +23,7 @@ import org.eclipse.jdt.annotation.NonNullByDefault;
 public class MessageWrapper<T> {
     public CommandType commandType;
     public T content;
+    public String subDeviceId = "";
 
     public MessageWrapper(CommandType commandType, T content) {
         this.commandType = commandType;

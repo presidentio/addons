@@ -92,9 +92,13 @@ public class TuyaEncoder extends MessageToByteEncoder<MessageWrapper<?>> {
                 }
                 payload.put("data", data);
             } else {
-                payload.put("devId", deviceId);
-                payload.put("gwId", deviceId);
-                payload.put("uid", deviceId);
+                if (!msg.subDeviceId.isEmpty()) {
+                    payload.put("cid", msg.subDeviceId);
+                } else {
+                    payload.put("devId", deviceId);
+                    payload.put("gwId", deviceId);
+                    payload.put("uid", deviceId);
+                }
                 payload.put("t", System.currentTimeMillis() / 1000);
                 if (content != null) {
                     payload.putAll(content);
