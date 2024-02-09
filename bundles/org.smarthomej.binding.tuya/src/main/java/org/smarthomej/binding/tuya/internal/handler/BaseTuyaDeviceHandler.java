@@ -26,6 +26,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import java.util.Optional;
 import java.util.concurrent.ScheduledFuture;
 import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
@@ -56,6 +57,7 @@ import org.openhab.core.types.CommandOption;
 import org.openhab.core.types.State;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.smarthomej.binding.tuya.internal.TuyaBindingConstants;
 import org.smarthomej.binding.tuya.internal.config.ChannelConfiguration;
 import org.smarthomej.binding.tuya.internal.config.DeviceConfiguration;
 import org.smarthomej.binding.tuya.internal.local.DeviceStatusListener;
@@ -294,9 +296,17 @@ public class BaseTuyaDeviceHandler extends BaseThingHandler implements DeviceSta
             }
         }
 
+        Optional<String> subDeviceId = Optional
+                .ofNullable(thing.getConfiguration().get(TuyaBindingConstants.CONFIG_DEVICE_UUID))
+                .map(Objects::toString);
+
         TuyaDevice tuyaDevice = getTuyaDevice();
         if (!commandRequest.isEmpty() && tuyaDevice != null) {
-            tuyaDevice.set(commandRequest);
+            if (subDeviceId.isPresent()) {
+                tuyaDevice.set(commandRequest, subDeviceId.get());
+            } else {
+                tuyaDevice.set(commandRequest);
+            }
         }
     }
 

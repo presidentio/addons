@@ -112,8 +112,15 @@ public class TuyaDevice implements ChannelFutureListener {
     }
 
     public void set(Map<Integer, @Nullable Object> command) {
+        this.set(command, null);
+    }
+
+    public void set(Map<Integer, @Nullable Object> command, @Nullable String subDeviceId) {
         CommandType commandType = (protocolVersion == V3_4) ? CONTROL_NEW : CONTROL;
         MessageWrapper<?> m = new MessageWrapper<>(commandType, Map.of("dps", command));
+        if (subDeviceId != null) {
+            m.subDeviceId = subDeviceId;
+        }
         Channel channel = this.channel;
         if (channel != null) {
             channel.writeAndFlush(m);
